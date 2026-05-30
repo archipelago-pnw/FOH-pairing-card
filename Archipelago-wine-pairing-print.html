@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///Users/bkwy/Downloads/wine-pairing-tool_31.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Archipelago — Wine Pairing</title>
+<script src="./Archipelago-wine-pairing-print_files/html2canvas.min.js"></script>
+<script src="./Archipelago-wine-pairing-print_files/jspdf.umd.min.js"></script>
+<style>
+:root{--k:#c8a96e;--km:#a07840;--kl:#d9be8a;--ink:#1a1008;--ink2:#2e1e0c;--ink3:#3d2b14;--cr:#f2e8d8;--cr2:#d9c9b0;--cr3:#b8a48a;--bd:#4a3318;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{background:var(--ink);height:100%;max-height:100vh;overflow:hidden;font-family:"Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;color:var(--cr);}
+.screen{display:none;flex-direction:column;height:100vh;max-height:100vh;overflow:hidden;}
+.top-bar{display:flex;align-items:center;padding:12px 20px 10px;border-bottom:1px solid var(--bd);gap:12px;flex-shrink:0;}
+.top-bar .b{fill:var(--k);}
+.top-bar-title{font-size:10px;letter-spacing:.35em;text-transform:uppercase;color:var(--km);flex:1;}
+.back-btn{background:none;border:none;color:var(--km);font-family:inherit;font-size:13px;cursor:pointer;padding:8px 0;}
+.back-btn:active{color:var(--k);}
+.date-row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--bd);}
+.field-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--km);}
+input[type=date]{background:var(--ink2);border:1px solid var(--bd);color:var(--cr);font-family:inherit;font-size:15px;padding:8px 12px;outline:none;flex:1;-webkit-appearance:none;border-radius:0;}
+input[type=date]:focus{border-color:var(--k);}
+.sec-pad{padding:12px 20px 8px;}
+.sec-label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--km);margin-bottom:10px;}
+.season-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 20px;}
+.season-btn{background:var(--ink2);border:1px solid var(--bd);color:var(--cr2);font-family:inherit;font-size:13px;padding:12px;cursor:pointer;text-align:center;min-height:48px;}
+.season-btn:active{background:var(--ink3);}
+.season-btn.selected{background:rgba(200,169,110,.15);border-color:var(--k);color:var(--cr);}
+.divider{height:1px;background:var(--bd);margin:12px 20px 0;}
+.act-sec{padding:12px 20px 16px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
+.abtn{width:100%;padding:14px 16px;font-family:inherit;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:14px;border:1px solid;text-align:left;min-height:48px;}
+.abtn .icon{font-size:18px;flex-shrink:0;}
+.abtn .sub{font-size:11px;margin-top:2px;}
+.abtn-gold{background:var(--k);border-color:var(--k);color:var(--ink);}
+.abtn-gold .sub{color:var(--ink3);}
+.abtn-gold:active{background:var(--kl);}
+.abtn-gold:disabled{opacity:.35;pointer-events:none;}
+.abtn-dark{background:var(--ink2);border-color:var(--bd);color:var(--cr);}
+.abtn-dark .sub{color:var(--cr3);}
+.abtn-dark:active{background:var(--ink3);}
+.abtn-dark:disabled{opacity:.35;pointer-events:none;}
+.abtn-ghost{background:transparent;border-color:var(--bd);color:var(--cr3);}
+.abtn-ghost:active{border-color:var(--km);color:var(--cr2);}
+.list-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 20px;display:flex;flex-direction:column;gap:6px;}
+.pairing-slot,.swap-slot{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--ink2);border:1px solid var(--bd);}
+.swap-slot{cursor:pointer;min-height:48px;}
+.swap-slot:active{background:var(--ink3);}
+.swap-slot.swapped{background:rgba(200,169,110,.12);border-color:var(--k);}
+.slot-num{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--km);width:20px;flex-shrink:0;text-align:center;}
+.slot-producer,.picker-producer{font-size:14px;color:var(--cr);}
+.slot-name,.picker-name{font-size:12px;font-style:italic;color:var(--cr2);margin-top:2px;}
+.slot-vintage,.picker-vintage{font-size:13px;color:var(--k);flex-shrink:0;}
+.swap-badge{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);background:var(--k);padding:2px 6px;flex-shrink:0;}
+.swap-arrow{color:var(--km);font-size:16px;flex-shrink:0;}
+.bottom-bar{padding:16px 20px;border-top:1px solid var(--bd);flex-shrink:0;background:var(--ink);}
+.bottom-bar .abtn{justify-content:center;text-align:center;}
+.swap-intro{padding:14px 20px;font-size:13px;color:var(--cr2);line-height:1.5;border-bottom:1px solid var(--bd);flex-shrink:0;}
+.search-wrap{padding:12px 20px;border-bottom:1px solid var(--bd);flex-shrink:0;}
+.search-input{width:100%;background:var(--ink2);border:1px solid var(--bd);color:var(--cr);font-family:inherit;font-size:15px;padding:12px 14px;outline:none;border-radius:0;-webkit-appearance:none;}
+.search-input:focus{border-color:var(--k);}
+.search-input::placeholder{color:var(--cr3);}
+.picker-list{flex:1;overflow-y:auto;}
+.picker-item,.custom-item{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--bd);cursor:pointer;min-height:48px;}
+.picker-item:active,.custom-item:active{background:var(--ink2);}
+.picker-info{flex:1;}
+.custom-counter{padding:12px 20px;font-size:11px;letter-spacing:.15em;color:var(--km);border-bottom:1px solid var(--bd);flex-shrink:0;}
+.custom-item.sel{background:rgba(200,169,110,.1);}
+.custom-item.dim{opacity:.3;pointer-events:none;}
+.check-box{width:20px;height:20px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.custom-item.sel .check-box{background:var(--k);border-color:var(--k);}
+.check-mark{font-size:11px;color:var(--ink);display:none;}
+.custom-item.sel .check-mark{display:block;}
+
+/* PRINT PREVIEW OVERLAY */
+#screen-print{position:fixed;inset:0;z-index:200;background:rgba(8,5,2,.95);display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;}
+#screen-print.active{display:flex;}
+.print-hint{font-size:11px;color:var(--cr3);letter-spacing:.12em;text-align:center;line-height:1.6;}
+.print-btns{display:flex;gap:10px;}
+.pbtn{padding:14px 28px;font-family:inherit;font-size:11px;font-weight:bold;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;border:none;}
+.pbtn-go{background:var(--k);color:var(--ink);}
+.pbtn-go:active{background:var(--kl);}
+.pbtn-go:disabled{opacity:.5;pointer-events:none;}
+.pbtn-back{background:transparent;border:1px solid var(--bd)!important;color:var(--cr3);}
+
+/* CARD PREVIEW - screen only, kraft background for preview */
+#card-wrapper{background:#fff;padding:3px;box-shadow:0 20px 60px rgba(0,0,0,.8);}
+#card{
+  width:288px;height:480px;
+  background:#c4a060;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:18px 30px 32px;
+  position:relative;overflow:hidden;
+  font-family:"Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+#card::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 55%,rgba(80,45,10,.22) 100%);z-index:1;}#card.no-bg{background:none!important;}#card.no-bg::before{display:none!important;}
+#card>*{position:relative;z-index:2;}
+#card .b{fill:#2a1806;}
+#card-date{font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:#2a1806;opacity:.6;margin-bottom:8px;}
+.card-rule{width:52px;height:1px;background:#2a1806;opacity:.25;margin-top:12px;margin-bottom:22px;}
+#card-wines{display:flex;flex-direction:column;align-items:center;gap:0;text-align:center;width:100%;}
+.card-wine{font-size:12px;color:#221405;letter-spacing:.03em;line-height:1.3;margin-bottom:14px;width:100%;}
+.card-wine:last-child{margin-bottom:0;}
+.card-wine em{font-style:italic;}
+</style>
+</head>
+<body>
+
+<div id="screen-home" class="screen" style="display: flex;">
+  <div class="top-bar">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150.63 106.98" style="width:96px;opacity:0.9"><style>.b{fill:var(--k)}</style><g><path class="b" d="M5.32,95.72c-1.02,0-1.9-.34-2.63-1.02-.73-.68-1.1-1.5-1.1-2.46,0-.91,.31-1.67,.95-2.26,.63-.59,1.91-1.16,3.84-1.7,1.21-.34,2.03-.62,2.45-.86v-.97c0-.95-.26-1.71-.79-2.3-.53-.58-1.24-.87-2.12-.87-.8,0-1.52,.25-2.14,.76s-1.06,1.19-1.31,2.05l-.67-.18c.26-1.21,.84-2.18,1.72-2.92,.88-.73,1.92-1.1,3.1-1.1,1.4,0,2.54,.42,3.41,1.27,.87,.85,1.31,2.02,1.31,3.52v5.6c0,.79,.05,1.33,.15,1.61,.1,.28,.3,.42,.59,.42,.19,0,.35-.08,.47-.24,.12-.16,.26-.5,.41-1.02h.63c-.06,.82-.32,1.46-.77,1.94-.45,.48-1.04,.72-1.77,.72-1.07,0-1.81-.62-2.21-1.85-.65,.71-1.22,1.19-1.73,1.46s-1.1,.4-1.78,.4Zm3.51-3.06v-4.43c-.37,.16-.91,.35-1.62,.59-1.31,.44-2.15,.88-2.51,1.32-.37,.44-.55,1.03-.55,1.77,0,.65,.2,1.21,.59,1.68,.39,.47,.85,.71,1.4,.71,.49,0,1.01-.16,1.55-.48s.92-.71,1.15-1.18Z"></path><path class="b" d="M19.82,81.89v2.83c1.2-1.04,2.13-1.78,2.8-2.2s1.22-.63,1.67-.63c.83,0,1.63,.34,2.39,1.03l-.99,2.32c-1.39-.77-2.42-1.15-3.1-1.15-.74,0-1.67,.53-2.77,1.58v7.18c0,.72,.15,1.21,.45,1.46,.3,.25,.88,.38,1.73,.38v.61h-6.89v-.61c.91,0,1.51-.14,1.79-.43,.28-.29,.42-.98,.42-2.08v-7.13c0-.9-.15-1.49-.46-1.75-.31-.26-1.05-.4-2.24-.4v-.61l4.57-.4h.63Z"></path><path class="b" d="M39.69,81.89v4.61h-.63c-.28-1.2-.8-2.15-1.58-2.84-.78-.7-1.71-1.04-2.79-1.04-1.3,0-2.35,.5-3.17,1.51-.82,1.01-1.22,2.32-1.22,3.92,0,1.78,.48,3.31,1.45,4.61,.97,1.3,2.12,1.94,3.45,1.94,.89,0,1.77-.24,2.64-.72,.87-.48,1.62-1.15,2.24-2v.95c-1.42,1.92-3.34,2.88-5.76,2.88-1.93,0-3.51-.61-4.73-1.84-1.22-1.22-1.83-2.81-1.83-4.77s.66-3.71,1.97-5.11c1.31-1.4,2.9-2.11,4.76-2.11,.83,0,1.75,.17,2.77,.5,.44,.14,.75,.22,.92,.22,.37,0,.67-.24,.88-.72h.63Z"></path><path class="b" d="M52.15,92.58v-6.46c0-.87-.24-1.56-.72-2.07-.48-.52-1.12-.78-1.91-.78-.73,0-1.39,.19-1.97,.57s-1.19,1.02-1.83,1.92v7.16c0,.67,.16,1.14,.47,1.39,.31,.25,.88,.38,1.71,.38v.61h-7v-.61c1-.02,1.63-.19,1.91-.49,.28-.3,.41-.97,.41-2.02v-17.01c0-.79-.14-1.32-.42-1.58-.28-.26-.92-.39-1.9-.39v-.61l4.21-.45h.61v12.35c.84-.96,1.6-1.64,2.28-2.03s1.44-.58,2.3-.58c1.27,0,2.32,.41,3.13,1.23,.82,.82,1.22,1.92,1.22,3.3v5.77c0,1.02,.14,1.7,.41,2.02,.28,.33,.84,.49,1.69,.49v.61h-6.79v-.61c.89,0,1.47-.14,1.76-.41,.28-.28,.42-.84,.42-1.7Z"></path><path class="b" d="M62.57,81.89h.63v11c0,.72,.16,1.2,.47,1.44,.31,.24,.88,.36,1.71,.36v.61h-7.15v-.61c1.04,0,1.72-.12,2.02-.35,.3-.23,.45-.72,.45-1.45v-8.04c0-.79-.14-1.32-.41-1.57-.28-.25-.96-.38-2.05-.38v-.61l4.34-.4Zm-.58-6.75c.44,0,.82,.15,1.12,.46,.31,.31,.46,.68,.46,1.12s-.16,.83-.47,1.14c-.31,.32-.68,.48-1.12,.48s-.83-.16-1.15-.48c-.32-.32-.49-.7-.49-1.14s.16-.82,.48-1.12c.32-.31,.7-.46,1.16-.46Z"></path><path class="b" d="M70.69,81.89v2.2c.83-.8,1.58-1.37,2.26-1.7,.68-.33,1.44-.5,2.28-.5,1.69,0,3.1,.64,4.22,1.93,1.12,1.29,1.68,2.91,1.68,4.87s-.62,3.69-1.85,5.02-2.78,2-4.64,2c-1.29,0-2.6-.52-3.95-1.55v8.59c0,.89,.15,1.47,.46,1.75,.31,.28,.88,.42,1.72,.42v.61h-6.98v-.61c.9,0,1.51-.13,1.82-.38s.47-.73,.47-1.44v-18.18c0-.88-.13-1.44-.4-1.68-.26-.24-.89-.36-1.89-.36v-.61l4.18-.4h.63Zm0,3.17v8.17c1.02,1.08,2.23,1.62,3.61,1.62,1.17,0,2.14-.55,2.93-1.64,.79-1.09,1.18-2.45,1.18-4.07,0-1.75-.39-3.2-1.18-4.34-.79-1.14-1.79-1.71-3-1.71s-2.41,.65-3.54,1.96Z"></path><path class="b" d="M96,91.95v.95c-.79,1.01-1.6,1.73-2.42,2.16-.82,.43-1.81,.65-2.96,.65-2.04,0-3.72-.64-5.05-1.92-1.33-1.28-1.99-2.9-1.99-4.87s.63-3.65,1.9-5c1.27-1.36,2.82-2.03,4.65-2.03,1.51,0,2.83,.51,3.96,1.53,1.13,1.02,1.69,2.24,1.69,3.65v.27h-9.6v.18c0,1.44,.22,2.69,.66,3.75,.44,1.06,1.08,1.89,1.92,2.49,.84,.6,1.72,.9,2.63,.9,.85,0,1.58-.18,2.19-.53,.61-.35,1.41-1.08,2.42-2.19Zm-9.81-5.24h7.11v-.25c0-1.16-.33-2.09-1-2.77-.67-.68-1.5-1.03-2.49-1.03-1.06,0-1.91,.36-2.55,1.08-.64,.72-1,1.71-1.07,2.97Z"></path><path class="b" d="M104.47,94.69h.34v.61h-7.29v-.61h.67c.67,0,1.13-.17,1.37-.52,.24-.35,.36-1,.36-1.95v-17.22c0-.67-.13-1.14-.4-1.4-.26-.26-.72-.39-1.37-.39h-.85v-.61l4.5-.45h.61v20.7c0,.71,.14,1.19,.43,1.45,.29,.26,.83,.39,1.61,.39Z"></path><path class="b" d="M110.18,95.72c-1.02,0-1.9-.34-2.63-1.02-.73-.68-1.1-1.5-1.1-2.46,0-.91,.32-1.67,.95-2.26,.63-.59,1.91-1.16,3.84-1.7,1.21-.34,2.03-.62,2.45-.86v-.97c0-.95-.26-1.71-.79-2.3s-1.24-.87-2.12-.87c-.8,0-1.52,.25-2.14,.76s-1.06,1.19-1.31,2.05l-.67-.18c.26-1.21,.84-2.18,1.72-2.92,.88-.73,1.92-1.1,3.11-1.1,1.4,0,2.54,.42,3.41,1.27,.87,.85,1.3,2.02,1.3,3.52v5.6c0,.79,.05,1.33,.15,1.61,.1,.28,.3,.42,.58,.42,.19,0,.35-.08,.47-.24,.12-.16,.26-.5,.41-1.02h.63c-.06,.82-.32,1.46-.77,1.94-.45,.48-1.04,.72-1.77,.72-1.07,0-1.81-.62-2.21-1.85-.65,.71-1.22,1.19-1.73,1.46-.5,.26-1.1,.4-1.78,.4Zm3.51-3.06v-4.43c-.37,.16-.91,.35-1.62,.59-1.31,.44-2.15,.88-2.51,1.32s-.55,1.03-.55,1.77c0,.65,.2,1.21,.58,1.68,.39,.47,.86,.71,1.4,.71,.49,0,1.01-.16,1.55-.48s.92-.71,1.15-1.18Z"></path><path class="b" d="M129.27,82.03h4.19v1.48h-3.46c.98,1.19,1.48,2.45,1.48,3.8s-.48,2.49-1.43,3.51c-.95,1.02-2.1,1.57-3.43,1.64-.95,.05-1.89,.35-2.83,.92-.94,.56-1.41,1.07-1.41,1.51,0,.48,.25,.84,.75,1.08,.5,.24,1.67,.52,3.5,.84,2.04,.37,3.46,.71,4.26,1,.8,.3,1.42,.73,1.87,1.29,.45,.56,.67,1.19,.67,1.9,0,1.54-.78,2.84-2.33,3.89-1.55,1.06-3.45,1.59-5.7,1.59-1.91,0-3.45-.37-4.63-1.11-1.18-.74-1.77-1.7-1.77-2.89,0-.83,.34-1.56,1.02-2.21,.68-.64,1.75-1.27,3.21-1.88v-.07c-.89-.2-1.58-.52-2.09-.95-.5-.43-.76-.91-.76-1.45,0-1.44,1.34-2.63,4.03-3.58v-.07c-1.31-.35-2.32-.95-3.03-1.81-.71-.86-1.07-1.9-1.07-3.12,0-1.57,.52-2.87,1.58-3.91,1.05-1.03,2.37-1.55,3.97-1.55,.31,0,.89,.02,1.73,.07,.84,.05,1.4,.07,1.69,.07Zm2.81,20.13c0-.85-.53-1.52-1.6-1.99-1.07-.47-3.09-.97-6.07-1.49-2.53,.68-3.8,1.72-3.8,3.1,0,.94,.62,1.72,1.87,2.35,1.25,.63,2.81,.95,4.68,.95,1.45,0,2.63-.27,3.55-.81,.91-.54,1.37-1.24,1.37-2.11Zm-9.42-15.09c0,1.42,.29,2.56,.88,3.42,.59,.86,1.37,1.3,2.34,1.3s1.79-.42,2.37-1.27,.87-2,.87-3.45c0-1.32-.3-2.39-.89-3.22s-1.37-1.24-2.31-1.24-1.76,.41-2.36,1.23c-.6,.82-.9,1.9-.9,3.23Z"></path><path class="b" d="M148.83,88.82c0,1.97-.68,3.61-2.04,4.92-1.36,1.31-3.06,1.97-5.1,1.97s-3.74-.66-5.1-1.97c-1.36-1.31-2.04-2.96-2.04-4.92s.68-3.65,2.03-4.96,3.06-1.97,5.11-1.97,3.76,.66,5.11,1.97,2.03,2.97,2.03,4.96Zm-2.72,0c0-1.86-.4-3.37-1.19-4.51s-1.87-1.71-3.24-1.71-2.45,.56-3.24,1.68c-.79,1.12-1.19,2.63-1.19,4.54s.39,3.37,1.18,4.49c.79,1.12,1.87,1.68,3.25,1.68s2.46-.57,3.25-1.7c.79-1.13,1.18-2.62,1.18-4.47Z"></path></g><g><circle class="b" cx="65.93" cy="11.16" r="11.16"></circle><circle class="b" cx="66.49" cy="28.28" r="3.24"></circle><circle class="b" cx="87.23" cy="55.55" r="7.32"></circle><circle class="b" cx="78.32" cy="42.03" r="5.23"></circle><circle class="b" cx="58.66" cy="38.65" r="2.93"></circle><circle class="b" cx="76.5" cy="61.95" r="2.24"></circle><circle class="b" cx="85.94" cy="31.77" r="3.69"></circle><circle class="b" cx="73.42" cy="33.2" r="3.69"></circle><circle class="b" cx="53.21" cy="43.82" r="1.24"></circle></g></svg>
+  </div>
+  <div class="date-row">
+    <label class="field-label">Date</label>
+    <input type="date" id="dinner-date">
+  </div>
+  <div class="sec-pad"><div class="sec-label">Tonight's Menu</div></div>
+  <div class="season-grid" id="season-grid"><button class="season-btn">Spring 2026</button><button class="season-btn">Winter 2025</button><button class="season-btn">Fall 2025</button></div>
+  <div class="divider"></div>
+  <div class="act-sec">
+    <button class="abtn abtn-gold" id="btn-standard" onclick="goStandard()" disabled="">
+      <span class="icon">🖨</span>
+      <span><div>Print Standard Cards</div><div class="sub">Full pairing for all guests</div></span>
+    </button>
+    <button class="abtn abtn-dark" id="btn-swap" onclick="goSwap()" disabled="">
+      <span class="icon">⇄</span>
+      <span><div>Quick Swap</div><div class="sub">Replace one or two wines mid-service</div></span>
+    </button>
+    <button class="abtn abtn-ghost" onclick="goCustom()">
+      <span class="icon">✦</span>
+      <span><div>Build Custom Pairing</div><div class="sub">Fully custom card from full list</div></span>
+    </button>
+  </div>
+</div>
+
+<div id="screen-standard" class="screen" style="display: none;">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="top-bar-title" id="standard-title"></div>
+  </div>
+  <div class="list-scroll" id="pairing-list"></div>
+  <div class="bottom-bar">
+    <button class="abtn abtn-gold" onclick="printCard(&#39;standard&#39;)">
+      <span class="icon">🖨</span><span>Print Card</span>
+    </button>
+  </div>
+</div>
+
+<div id="screen-swap" class="screen" style="display: none;">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="top-bar-title">Quick Swap</div>
+  </div>
+  <div class="swap-intro">Tap a pairing to replace it. The rest stays the same.</div>
+  <div class="list-scroll" id="swap-slots"></div>
+  <div class="bottom-bar">
+    <button class="abtn abtn-gold" onclick="printCard(&#39;swap&#39;)">
+      <span class="icon">🖨</span><span>Print Swap Card</span>
+    </button>
+  </div>
+</div>
+
+<div id="screen-picker" class="screen" style="display: none;">
+  <div class="top-bar">
+    <button class="back-btn" onclick="show(&#39;swap&#39;)">← Back</button>
+    <div class="top-bar-title">Choose Replacement</div>
+  </div>
+  <div class="search-wrap">
+    <input type="search" class="search-input" id="picker-search" placeholder="Search producer or wine…" oninput="filterPicker(this.value)">
+  </div>
+  <div class="picker-list" id="picker-list"></div>
+</div>
+
+<div id="screen-custom" class="screen" style="display: none;">
+  <div class="top-bar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="top-bar-title">Custom Pairing</div>
+  </div>
+  <div class="custom-counter" id="custom-counter">0 / 5 selected</div>
+  <div class="search-wrap">
+    <input type="search" class="search-input" id="custom-search" placeholder="Search…" oninput="filterCustom(this.value)">
+  </div>
+  <div class="picker-list" id="custom-list"></div>
+  <div class="bottom-bar">
+    <button class="abtn abtn-gold" id="btn-print-custom" onclick="printCard(&#39;custom&#39;)" disabled="">
+      <span class="icon">🖨</span><span>Print Custom Card</span>
+    </button>
+  </div>
+</div>
+
+<!-- Print preview overlay (kraft background for screen preview only) -->
+<div id="screen-print">
+  <div class="print-hint">Print directly to your AirPrint printer at actual size.</div>
+  <div class="print-btns">
+    <button class="pbtn pbtn-go" id="pdf-btn" onclick="generatePDF()">Print Card</button>
+    <button class="pbtn pbtn-back" onclick="closePrint()">← Back</button>
+  </div>
+  <div id="card-wrapper">
+    <div id="card">
+      <svg id="card-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150.63 106.98" style="width:130px;margin-bottom:7px;margin-top:-10px;display:block"><style>.b{fill:#2a1806}</style><g><path class="b" d="M5.32,95.72c-1.02,0-1.9-.34-2.63-1.02-.73-.68-1.1-1.5-1.1-2.46,0-.91,.31-1.67,.95-2.26,.63-.59,1.91-1.16,3.84-1.7,1.21-.34,2.03-.62,2.45-.86v-.97c0-.95-.26-1.71-.79-2.3-.53-.58-1.24-.87-2.12-.87-.8,0-1.52,.25-2.14,.76s-1.06,1.19-1.31,2.05l-.67-.18c.26-1.21,.84-2.18,1.72-2.92,.88-.73,1.92-1.1,3.1-1.1,1.4,0,2.54,.42,3.41,1.27,.87,.85,1.31,2.02,1.31,3.52v5.6c0,.79,.05,1.33,.15,1.61,.1,.28,.3,.42,.59,.42,.19,0,.35-.08,.47-.24,.12-.16,.26-.5,.41-1.02h.63c-.06,.82-.32,1.46-.77,1.94-.45,.48-1.04,.72-1.77,.72-1.07,0-1.81-.62-2.21-1.85-.65,.71-1.22,1.19-1.73,1.46s-1.1,.4-1.78,.4Zm3.51-3.06v-4.43c-.37,.16-.91,.35-1.62,.59-1.31,.44-2.15,.88-2.51,1.32-.37,.44-.55,1.03-.55,1.77,0,.65,.2,1.21,.59,1.68,.39,.47,.85,.71,1.4,.71,.49,0,1.01-.16,1.55-.48s.92-.71,1.15-1.18Z"></path><path class="b" d="M19.82,81.89v2.83c1.2-1.04,2.13-1.78,2.8-2.2s1.22-.63,1.67-.63c.83,0,1.63,.34,2.39,1.03l-.99,2.32c-1.39-.77-2.42-1.15-3.1-1.15-.74,0-1.67,.53-2.77,1.58v7.18c0,.72,.15,1.21,.45,1.46,.3,.25,.88,.38,1.73,.38v.61h-6.89v-.61c.91,0,1.51-.14,1.79-.43,.28-.29,.42-.98,.42-2.08v-7.13c0-.9-.15-1.49-.46-1.75-.31-.26-1.05-.4-2.24-.4v-.61l4.57-.4h.63Z"></path><path class="b" d="M39.69,81.89v4.61h-.63c-.28-1.2-.8-2.15-1.58-2.84-.78-.7-1.71-1.04-2.79-1.04-1.3,0-2.35,.5-3.17,1.51-.82,1.01-1.22,2.32-1.22,3.92,0,1.78,.48,3.31,1.45,4.61,.97,1.3,2.12,1.94,3.45,1.94,.89,0,1.77-.24,2.64-.72,.87-.48,1.62-1.15,2.24-2v.95c-1.42,1.92-3.34,2.88-5.76,2.88-1.93,0-3.51-.61-4.73-1.84-1.22-1.22-1.83-2.81-1.83-4.77s.66-3.71,1.97-5.11c1.31-1.4,2.9-2.11,4.76-2.11,.83,0,1.75,.17,2.77,.5,.44,.14,.75,.22,.92,.22,.37,0,.67-.24,.88-.72h.63Z"></path><path class="b" d="M52.15,92.58v-6.46c0-.87-.24-1.56-.72-2.07-.48-.52-1.12-.78-1.91-.78-.73,0-1.39,.19-1.97,.57s-1.19,1.02-1.83,1.92v7.16c0,.67,.16,1.14,.47,1.39,.31,.25,.88,.38,1.71,.38v.61h-7v-.61c1-.02,1.63-.19,1.91-.49,.28-.3,.41-.97,.41-2.02v-17.01c0-.79-.14-1.32-.42-1.58-.28-.26-.92-.39-1.9-.39v-.61l4.21-.45h.61v12.35c.84-.96,1.6-1.64,2.28-2.03s1.44-.58,2.3-.58c1.27,0,2.32,.41,3.13,1.23,.82,.82,1.22,1.92,1.22,3.3v5.77c0,1.02,.14,1.7,.41,2.02,.28,.33,.84,.49,1.69,.49v.61h-6.79v-.61c.89,0,1.47-.14,1.76-.41,.28-.28,.42-.84,.42-1.7Z"></path><path class="b" d="M62.57,81.89h.63v11c0,.72,.16,1.2,.47,1.44,.31,.24,.88,.36,1.71,.36v.61h-7.15v-.61c1.04,0,1.72-.12,2.02-.35,.3-.23,.45-.72,.45-1.45v-8.04c0-.79-.14-1.32-.41-1.57-.28-.25-.96-.38-2.05-.38v-.61l4.34-.4Zm-.58-6.75c.44,0,.82,.15,1.12,.46,.31,.31,.46,.68,.46,1.12s-.16,.83-.47,1.14c-.31,.32-.68,.48-1.12,.48s-.83-.16-1.15-.48c-.32-.32-.49-.7-.49-1.14s.16-.82,.48-1.12c.32-.31,.7-.46,1.16-.46Z"></path><path class="b" d="M70.69,81.89v2.2c.83-.8,1.58-1.37,2.26-1.7,.68-.33,1.44-.5,2.28-.5,1.69,0,3.1,.64,4.22,1.93,1.12,1.29,1.68,2.91,1.68,4.87s-.62,3.69-1.85,5.02-2.78,2-4.64,2c-1.29,0-2.6-.52-3.95-1.55v8.59c0,.89,.15,1.47,.46,1.75,.31,.28,.88,.42,1.72,.42v.61h-6.98v-.61c.9,0,1.51-.13,1.82-.38s.47-.73,.47-1.44v-18.18c0-.88-.13-1.44-.4-1.68-.26-.24-.89-.36-1.89-.36v-.61l4.18-.4h.63Zm0,3.17v8.17c1.02,1.08,2.23,1.62,3.61,1.62,1.17,0,2.14-.55,2.93-1.64,.79-1.09,1.18-2.45,1.18-4.07,0-1.75-.39-3.2-1.18-4.34-.79-1.14-1.79-1.71-3-1.71s-2.41,.65-3.54,1.96Z"></path><path class="b" d="M96,91.95v.95c-.79,1.01-1.6,1.73-2.42,2.16-.82,.43-1.81,.65-2.96,.65-2.04,0-3.72-.64-5.05-1.92-1.33-1.28-1.99-2.9-1.99-4.87s.63-3.65,1.9-5c1.27-1.36,2.82-2.03,4.65-2.03,1.51,0,2.83,.51,3.96,1.53,1.13,1.02,1.69,2.24,1.69,3.65v.27h-9.6v.18c0,1.44,.22,2.69,.66,3.75,.44,1.06,1.08,1.89,1.92,2.49,.84,.6,1.72,.9,2.63,.9,.85,0,1.58-.18,2.19-.53,.61-.35,1.41-1.08,2.42-2.19Zm-9.81-5.24h7.11v-.25c0-1.16-.33-2.09-1-2.77-.67-.68-1.5-1.03-2.49-1.03-1.06,0-1.91,.36-2.55,1.08-.64,.72-1,1.71-1.07,2.97Z"></path><path class="b" d="M104.47,94.69h.34v.61h-7.29v-.61h.67c.67,0,1.13-.17,1.37-.52,.24-.35,.36-1,.36-1.95v-17.22c0-.67-.13-1.14-.4-1.4-.26-.26-.72-.39-1.37-.39h-.85v-.61l4.5-.45h.61v20.7c0,.71,.14,1.19,.43,1.45,.29,.26,.83,.39,1.61,.39Z"></path><path class="b" d="M110.18,95.72c-1.02,0-1.9-.34-2.63-1.02-.73-.68-1.1-1.5-1.1-2.46,0-.91,.32-1.67,.95-2.26,.63-.59,1.91-1.16,3.84-1.7,1.21-.34,2.03-.62,2.45-.86v-.97c0-.95-.26-1.71-.79-2.3s-1.24-.87-2.12-.87c-.8,0-1.52,.25-2.14,.76s-1.06,1.19-1.31,2.05l-.67-.18c.26-1.21,.84-2.18,1.72-2.92,.88-.73,1.92-1.1,3.11-1.1,1.4,0,2.54,.42,3.41,1.27,.87,.85,1.3,2.02,1.3,3.52v5.6c0,.79,.05,1.33,.15,1.61,.1,.28,.3,.42,.58,.42,.19,0,.35-.08,.47-.24,.12-.16,.26-.5,.41-1.02h.63c-.06,.82-.32,1.46-.77,1.94-.45,.48-1.04,.72-1.77,.72-1.07,0-1.81-.62-2.21-1.85-.65,.71-1.22,1.19-1.73,1.46-.5,.26-1.1,.4-1.78,.4Zm3.51-3.06v-4.43c-.37,.16-.91,.35-1.62,.59-1.31,.44-2.15,.88-2.51,1.32s-.55,1.03-.55,1.77c0,.65,.2,1.21,.58,1.68,.39,.47,.86,.71,1.4,.71,.49,0,1.01-.16,1.55-.48s.92-.71,1.15-1.18Z"></path><path class="b" d="M129.27,82.03h4.19v1.48h-3.46c.98,1.19,1.48,2.45,1.48,3.8s-.48,2.49-1.43,3.51c-.95,1.02-2.1,1.57-3.43,1.64-.95,.05-1.89,.35-2.83,.92-.94,.56-1.41,1.07-1.41,1.51,0,.48,.25,.84,.75,1.08,.5,.24,1.67,.52,3.5,.84,2.04,.37,3.46,.71,4.26,1,.8,.3,1.42,.73,1.87,1.29,.45,.56,.67,1.19,.67,1.9,0,1.54-.78,2.84-2.33,3.89-1.55,1.06-3.45,1.59-5.7,1.59-1.91,0-3.45-.37-4.63-1.11-1.18-.74-1.77-1.7-1.77-2.89,0-.83,.34-1.56,1.02-2.21,.68-.64,1.75-1.27,3.21-1.88v-.07c-.89-.2-1.58-.52-2.09-.95-.5-.43-.76-.91-.76-1.45,0-1.44,1.34-2.63,4.03-3.58v-.07c-1.31-.35-2.32-.95-3.03-1.81-.71-.86-1.07-1.9-1.07-3.12,0-1.57,.52-2.87,1.58-3.91,1.05-1.03,2.37-1.55,3.97-1.55,.31,0,.89,.02,1.73,.07,.84,.05,1.4,.07,1.69,.07Zm2.81,20.13c0-.85-.53-1.52-1.6-1.99-1.07-.47-3.09-.97-6.07-1.49-2.53,.68-3.8,1.72-3.8,3.1,0,.94,.62,1.72,1.87,2.35,1.25,.63,2.81,.95,4.68,.95,1.45,0,2.63-.27,3.55-.81,.91-.54,1.37-1.24,1.37-2.11Zm-9.42-15.09c0,1.42,.29,2.56,.88,3.42,.59,.86,1.37,1.3,2.34,1.3s1.79-.42,2.37-1.27,.87-2,.87-3.45c0-1.32-.3-2.39-.89-3.22s-1.37-1.24-2.31-1.24-1.76,.41-2.36,1.23c-.6,.82-.9,1.9-.9,3.23Z"></path><path class="b" d="M148.83,88.82c0,1.97-.68,3.61-2.04,4.92-1.36,1.31-3.06,1.97-5.1,1.97s-3.74-.66-5.1-1.97c-1.36-1.31-2.04-2.96-2.04-4.92s.68-3.65,2.03-4.96,3.06-1.97,5.11-1.97,3.76,.66,5.11,1.97,2.03,2.97,2.03,4.96Zm-2.72,0c0-1.86-.4-3.37-1.19-4.51s-1.87-1.71-3.24-1.71-2.45,.56-3.24,1.68c-.79,1.12-1.19,2.63-1.19,4.54s.39,3.37,1.18,4.49c.79,1.12,1.87,1.68,3.25,1.68s2.46-.57,3.25-1.7c.79-1.13,1.18-2.62,1.18-4.47Z"></path></g><g><circle class="b" cx="65.93" cy="11.16" r="11.16"></circle><circle class="b" cx="66.49" cy="28.28" r="3.24"></circle><circle class="b" cx="87.23" cy="55.55" r="7.32"></circle><circle class="b" cx="78.32" cy="42.03" r="5.23"></circle><circle class="b" cx="58.66" cy="38.65" r="2.93"></circle><circle class="b" cx="76.5" cy="61.95" r="2.24"></circle><circle class="b" cx="85.94" cy="31.77" r="3.69"></circle><circle class="b" cx="73.42" cy="33.2" r="3.69"></circle><circle class="b" cx="53.21" cy="43.82" r="1.24"></circle></g></svg>
+      <div id="card-date"></div>
+      <div class="card-rule"></div>
+      <div id="card-wines"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const WINE_DATA = {"fullList": [{"producer": "Analemma", "name": "Blanc de Noirs", "vintage": "2018"}, {"producer": "Brooks", "name": "Extended Tirage", "vintage": "2017"}, {"producer": "Tirriddis", "name": "Barrel Fermented Blanc de Blanc R4", "vintage": "NV"}, {"producer": "Statera Remix Vol III", "name": "Pet Nat", "vintage": "2022"}, {"producer": "Tirriddis", "name": "House Rosé (half bottle) 375mL", "vintage": "NV"}, {"producer": "Tirriddis", "name": "House Blanc (half bottle) 375mL", "vintage": "NV"}, {"producer": "Illahe", "name": "NV Cap Fizz Sparkling Rose", "vintage": "NV"}, {"producer": "Devium", "name": "Rosé", "vintage": "2023"}, {"producer": "Gilbert Cellars", "name": "Rosé", "vintage": "2024"}, {"producer": "Illahe", "name": "Rosé", "vintage": "2023"}, {"producer": "Libertine Wines", "name": "Rosé", "vintage": "2023"}, {"producer": "A.D. Beckham", "name": "Skins", "vintage": "2019"}, {"producer": "Ram Cellars", "name": "Orange Fraîche", "vintage": "2024"}, {"producer": "Gilbert Cellars", "name": "Orange", "vintage": "2023"}, {"producer": "Valdemar Estates", "name": "", "vintage": "2021"}, {"producer": "Walter Scott Koosah Vineyard", "name": "", "vintage": "2022"}, {"producer": "Concinnitas Farm", "name": "", "vintage": "2022"}, {"producer": "Johan Vineyards", "name": "", "vintage": "2021"}, {"producer": "Analemma", "name": "Blanco", "vintage": "2023"}, {"producer": "Hiyu", "name": "Tzum Lorelei White Wine", "vintage": "2023"}, {"producer": "Hiyu", "name": "Tzum Atavus VIII Perennial White Wine", "vintage": "NV"}, {"producer": "Andrew Will", "name": "Ciel du Cheval", "vintage": "2020"}, {"producer": "Devium", "name": "", "vintage": "2022"}, {"producer": "Johan Vineyards", "name": "", "vintage": "2022"}, {"producer": "Top Source", "name": "", "vintage": "2020"}, {"producer": "Loop de Loop", "name": "Riverside", "vintage": "2022"}, {"producer": "Elephant Seven", "name": "", "vintage": "2021"}, {"producer": "Hoquetus", "name": "Initials R.B.B.", "vintage": "2021"}, {"producer": "Andrew Will", "name": "Two Blondes Vineyard", "vintage": "2022"}, {"producer": "Andrew Will", "name": "Two Blondes Vineyard", "vintage": "2023"}, {"producer": "Cowhorn Vineyard", "name": "GSM", "vintage": "2022"}, {"producer": "Loop de Loop", "name": "Birdsong", "vintage": "2022"}, {"producer": "Top Source (BOH)", "name": "", "vintage": "2019"}, {"producer": "Andrew Will", "name": "Two Blondes Vineyard", "vintage": "2022"}, {"producer": "Limited Addition", "name": "", "vintage": "2022"}, {"producer": "Analemma", "name": "", "vintage": "2019"}, {"producer": "Native", "name": "", "vintage": "2017"}, {"producer": "Covington", "name": "Ma Belle", "vintage": "2018"}, {"producer": "Covington", "name": "Ma Belle", "vintage": "2017"}, {"producer": "Abacela", "name": "Port", "vintage": "2018"}, {"producer": "Capitello", "name": "Dolcino", "vintage": "2022"}, {"producer": "Alpenfire", "name": "Calypso", "vintage": ""}, {"producer": "Alpenfire", "name": "Pirate's Plank", "vintage": ""}, {"producer": "Alpenfire", "name": "Traditional Cuvée", "vintage": ""}, {"producer": "Fair Isle", "name": "Bobbi", "vintage": ""}, {"producer": "Fair Isle", "name": "Eugene", "vintage": ""}, {"producer": "Fair Isle", "name": "House Lager", "vintage": ""}, {"producer": "Fair Isle", "name": "Dark Lager", "vintage": ""}, {"producer": "Dry", "name": "Botanical Bubbly", "vintage": ""}], "seasons": {"Spring 2026": {"pairing": [{"producer": "Tirriddis", "name": "Blanc de Gris", "vintage": ""}, {"producer": "Ram Cellars", "name": "Orange Fraîche", "vintage": "2024"}, {"producer": "Cowhorn", "name": "Spiral", "vintage": "2024"}, {"producer": "Brick House", "name": "", "vintage": "2024"}, {"producer": "Devium", "name": "Natural Sparkling Ancestral Method", "vintage": "2024"}], "options": {"P1": [{"producer": "Tirriddis", "name": "Blanc de Gris", "vintage": ""}, {"producer": "Analemma", "name": "Blanc de Noir", "vintage": "2018"}, {"producer": "Concinnitas Farm", "name": "Blanc de Blanc", "vintage": "2021"}], "P2": [{"producer": "Ram Cellars", "name": "Orange Fraîche", "vintage": "2024"}, {"producer": "The Marigny St. Reginald Parish", "name": "Fancy Pants Rosé", "vintage": ""}, {"producer": "Libertine Wines", "name": "Orange", "vintage": "2022"}, {"producer": "Lares", "name": "Secundus Dominus Mortis", "vintage": "2022"}], "P3": [{"producer": "Cowhorn", "name": "Spiral", "vintage": "2024"}, {"producer": "Cowhorn", "name": "", "vintage": "2022"}, {"producer": "Sacred Shore", "name": "", "vintage": "2023"}, {"producer": "Libertine Wines", "name": "Barncat Dry", "vintage": "2022"}], "P4": [{"producer": "Brick House", "name": "", "vintage": "2024"}, {"producer": "AD Beckham", "name": "", "vintage": ""}], "P5": [{"producer": "Devium", "name": "Natural Sparkling Ancestral Method", "vintage": "2024"}, {"producer": "Statera Remix Vol III", "name": "Pet Nat", "vintage": "2022"}, {"producer": "Alpenfire", "name": "Cinders Traditional Method", "vintage": ""}]}}, "Winter 2025": {"pairing": [{"producer": "Concinnitas Farm", "name": "Blanc de Blanc", "vintage": "2021"}, {"producer": "Johan Vineyards", "name": "", "vintage": "2021"}, {"producer": "Loop de Loop", "name": "Wallflower Project Borderline Red", "vintage": "2023"}, {"producer": "Cowhorn Vineyard", "name": "GSM", "vintage": "2022"}, {"producer": "Statera Remix Vol III", "name": "Pet Nat", "vintage": "2022"}], "options": {"P1": [{"producer": "Concinnitas Farm", "name": "Blanc de Blanc", "vintage": "2021"}, {"producer": "Brooks", "name": "Extended Tirage", "vintage": "2019"}], "P2": [{"producer": "Johan Vineyards", "name": "", "vintage": "2021"}], "P3": [{"producer": "Loop de Loop", "name": "Wallflower Project Borderline Red", "vintage": "2023"}, {"producer": "Loop de Loop", "name": "Wallflower Project Chillable Red", "vintage": "2024"}], "P4": [{"producer": "Cowhorn Vineyard", "name": "GSM", "vintage": "2022"}], "P5": [{"producer": "Statera Remix Vol III", "name": "Pet Nat", "vintage": "2022"}, {"producer": "Pet Sounds", "name": "Pet Nat", "vintage": ""}]}}, "Fall 2025": {"pairing": [{"producer": "Brooks", "name": "Extended Tirage", "vintage": "2019"}, {"producer": "The Marigny \"St. Reginald Parish\"", "name": "Fancy Pants Rosé", "vintage": "2021"}, {"producer": "Loop de Loop", "name": "Chardonnay", "vintage": "2022"}, {"producer": "Top Source", "name": "", "vintage": "2020"}, {"producer": "Alpenfire", "name": "Burnt Branch Reserve", "vintage": "NV"}], "options": {"P1": [{"producer": "Brooks", "name": "Extended Tirage", "vintage": "2019"}, {"producer": "Tirriddis", "name": "Blanc de Blanc R.3", "vintage": "NV"}, {"producer": "Tirriddis", "name": "Grand Rendition No.4", "vintage": "NV"}, {"producer": "The Marigny Roman Holiday", "name": "Sparkle Motion", "vintage": "MV (2019 base wine, 2023 topping wine)"}, {"producer": "Rhubarb Apple Spruce", "name": "", "vintage": ""}], "P2": [{"producer": "The Marigny \"St. Reginald Parish\"", "name": "Fancy Pants Rosé", "vintage": "2021"}, {"producer": "Gilbert Cellars", "name": "Rosé", "vintage": "2023"}, {"producer": "Raspberry Habanero Fermented Crab Apple", "name": "", "vintage": ""}], "P3": [{"producer": "Loop de Loop", "name": "Chardonnay", "vintage": "2022"}, {"producer": "Analemma", "name": "Blanco", "vintage": "2023"}, {"producer": "Citation", "name": "", "vintage": "2015"}, {"producer": "Yacon Lemongrass Fig Leaf", "name": "", "vintage": ""}], "P4": [{"producer": "Top Source", "name": "", "vintage": "2020"}, {"producer": "Loop de Loop", "name": "Riverside", "vintage": "2022"}, {"producer": "Sacred Shore", "name": "", "vintage": "2023"}, {"producer": "Wild Blackberry Talong Rosemary", "name": "", "vintage": ""}], "P5": [{"producer": "Alpenfire", "name": "Burnt Branch Reserve", "vintage": "NV"}, {"producer": "Analemma", "name": "", "vintage": "2021"}, {"producer": "Alpenfire", "name": "Glow Rosé Cider", "vintage": "NV"}, {"producer": "Brooks", "name": "Sweet P", "vintage": "2024"}, {"producer": "Huckleberry Sara Sara", "name": "", "vintage": ""}]}}}};
+
+let allWines = WINE_DATA.fullList || [];
+let seasons   = WINE_DATA.seasons  || {};
+let seasonNames = Object.keys(seasons);
+let activeSeason = null;
+let swapPairings = [];
+let swapTarget = null;
+let customSel = [];
+
+document.getElementById('dinner-date').value = new Date().toISOString().split('T')[0];
+
+function fmtDate(s) {
+  if (!s) return '';
+  var p = s.split('-'), mo = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return mo[+p[1]-1] + ' ' + +p[2] + ', ' + p[0];
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.style.display='none'; });
+  var el = document.getElementById('screen-'+id);
+  if (el) el.style.display='flex';
+}
+
+function renderSeasons() {
+  var g = document.getElementById('season-grid');
+  g.innerHTML = '';
+  seasonNames.forEach(function(name) {
+    var b = document.createElement('button');
+    b.className = 'season-btn';
+    b.textContent = name;
+    b.onclick = function(){ selectSeason(name, b); };
+    g.appendChild(b);
+  });
+}
+
+function selectSeason(name, btn) {
+  activeSeason = name;
+  swapPairings = seasons[name].pairing.map(function(w){ return Object.assign({},w,{swapped:false}); });
+  document.querySelectorAll('.season-btn').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  document.getElementById('btn-standard').disabled = false;
+  document.getElementById('btn-swap').disabled = false;
+}
+
+function goHome() { show('home'); }
+
+function goStandard() {
+  if (!activeSeason) return;
+  document.getElementById('standard-title').textContent = activeSeason;
+  var list = document.getElementById('pairing-list');
+  list.innerHTML = '';
+  seasons[activeSeason].pairing.forEach(function(w, i) {
+    var el = document.createElement('div');
+    el.className = 'pairing-slot';
+    el.innerHTML = '<div class="slot-num">P'+(i+1)+'</div>'
+      + '<div class="slot-info"><div class="slot-producer">'+w.producer+'</div>'
+      + (w.name ? '<div class="slot-name">'+w.name+'</div>' : '')
+      + '</div><div class="slot-vintage">'+w.vintage+'</div>';
+    list.appendChild(el);
+  });
+  show('standard');
+}
+
+function goSwap() {
+  if (!activeSeason) return;
+  swapPairings = seasons[activeSeason].pairing.map(function(w){ return Object.assign({},w,{swapped:false}); });
+  renderSwapSlots();
+  show('swap');
+}
+
+function renderSwapSlots() {
+  var el = document.getElementById('swap-slots');
+  el.innerHTML = '';
+  swapPairings.forEach(function(w, i) {
+    var slot = document.createElement('div');
+    slot.className = 'swap-slot' + (w.swapped ? ' swapped' : '');
+    slot.innerHTML = (w.swapped ? '<span class="swap-badge">Swapped</span>' : '')
+      + '<div style="flex:1"><div class="slot-producer">'+w.producer+'</div>'
+      + (w.name ? '<div class="slot-name">'+w.name+'</div>' : '')
+      + '</div><div class="slot-vintage" style="margin-right:8px">'+w.vintage+'</div>'
+      + '<div class="swap-arrow">&#8250;</div>';
+    slot.onclick = function(){ openPicker(i); };
+    el.appendChild(slot);
+  });
+}
+
+function openPicker(idx) {
+  swapTarget = idx;
+  document.getElementById('picker-search').value = '';
+  renderPickerList(allWines);
+  show('picker');
+}
+
+function renderPickerList(wines) {
+  var el = document.getElementById('picker-list');
+  el.innerHTML = '';
+  wines.forEach(function(w) {
+    var item = document.createElement('div');
+    item.className = 'picker-item';
+    item.innerHTML = '<div class="picker-info"><div class="picker-producer">'+w.producer+'</div>'
+      + (w.name ? '<div class="picker-name">'+w.name+'</div>' : '')
+      + '</div><div class="picker-vintage">'+w.vintage+'</div>';
+    item.onclick = function(){
+      swapPairings[swapTarget] = Object.assign({},w,{swapped:true});
+      renderSwapSlots();
+      show('swap');
+    };
+    el.appendChild(item);
+  });
+}
+
+function filterPicker(q) {
+  var lq = q.toLowerCase();
+  renderPickerList(allWines.filter(function(w){
+    return w.producer.toLowerCase().indexOf(lq)>-1 || (w.name&&w.name.toLowerCase().indexOf(lq)>-1) || w.vintage.indexOf(q)>-1;
+  }));
+}
+
+function goCustom() {
+  customSel = [];
+  document.getElementById('custom-search').value = '';
+  renderCustomList(allWines);
+  updateCustomCounter();
+  show('custom');
+}
+
+function renderCustomList(wines) {
+  var el = document.getElementById('custom-list');
+  el.innerHTML = '';
+  wines.forEach(function(w) {
+    var isSel = customSel.some(function(s){ return s.producer===w.producer&&s.name===w.name&&s.vintage===w.vintage; });
+    var isDim = !isSel && customSel.length >= 5;
+    var item = document.createElement('div');
+    item.className = 'custom-item'+(isSel?' sel':'')+(isDim?' dim':'');
+    item.innerHTML = '<div class="check-box"><span class="check-mark">&#10003;</span></div>'
+      + '<div class="picker-info" style="flex:1"><div class="picker-producer">'+w.producer+'</div>'
+      + (w.name ? '<div class="picker-name">'+w.name+'</div>' : '')
+      + '</div><div class="picker-vintage">'+w.vintage+'</div>';
+    item.onclick = function(){ toggleCustom(w); };
+    el.appendChild(item);
+  });
+}
+
+function toggleCustom(wine) {
+  var idx = customSel.findIndex(function(s){ return s.producer===wine.producer&&s.name===wine.name&&s.vintage===wine.vintage; });
+  if (idx > -1) customSel.splice(idx,1);
+  else if (customSel.length < 5) customSel.push(wine);
+  var q = document.getElementById('custom-search').value.toLowerCase();
+  renderCustomList(q ? allWines.filter(function(w){ return w.producer.toLowerCase().indexOf(q)>-1||(w.name&&w.name.toLowerCase().indexOf(q)>-1); }) : allWines);
+  updateCustomCounter();
+}
+
+function filterCustom(q) {
+  var lq = q.toLowerCase();
+  renderCustomList(lq ? allWines.filter(function(w){ return w.producer.toLowerCase().indexOf(lq)>-1||(w.name&&w.name.toLowerCase().indexOf(lq)>-1); }) : allWines);
+}
+
+function updateCustomCounter() {
+  document.getElementById('custom-counter').textContent = customSel.length + ' / 5 selected';
+  document.getElementById('btn-print-custom').disabled = customSel.length !== 5;
+}
+
+function buildCardContent(pairings) {
+  document.getElementById('card-date').textContent = fmtDate(document.getElementById('dinner-date').value);
+  var el = document.getElementById('card-wines');
+  el.innerHTML = '';
+  pairings.forEach(function(w) {
+    var block = document.createElement('div');
+    block.className = 'card-wine';
+    block.innerHTML = w.producer + (w.name ? ' — <em>'+w.name+'</em>' : '') + (w.vintage ? ' — ' + w.vintage : '');
+    el.appendChild(block);
+  });
+  // Widow fix
+  requestAnimationFrame(function() {
+    el.querySelectorAll('.card-wine').forEach(function(block) {
+      var lh = parseFloat(getComputedStyle(block).lineHeight) || 12;
+      var lines = function() { return Math.round(block.getBoundingClientRect().height / lh); };
+      if (lines() < 2) return;
+      var html = block.innerHTML;
+      for (var i = 0; i < 4; i++) {
+        var last = html.lastIndexOf(' ');
+        if (last === -1) break;
+        var before = lines();
+        var test = html.slice(0, last) + ' ' + html.slice(last + 1);
+        block.innerHTML = test;
+        if (lines() < before) { break; }
+        html = test;
+      }
+    });
+  });
+}
+
+function printCard(mode) {
+  var pairings = mode==='standard' ? seasons[activeSeason].pairing : mode==='swap' ? swapPairings : customSel;
+  buildCardContent(pairings);
+  document.getElementById('screen-print').classList.add('active');
+}
+
+function closePrint() {
+  document.getElementById('screen-print').classList.remove('active');
+}
+
+function generatePDF() {
+  var date = document.getElementById('dinner-date').value;
+  var dateStr = '';
+  if (date) {
+    var p = date.split('-');
+    var mo = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    dateStr = mo[+p[1]-1] + ' ' + +p[2] + ', ' + p[0];
+  }
+
+  var winesHtml = '';
+  document.querySelectorAll('.card-wine').forEach(function(w) {
+    winesHtml += '<p class="wine">' + w.innerHTML + '</p>';
+  });
+
+  // No fixed units — card fills 100% of whatever page the printer has selected.
+  // Staff set paper to 3x5 in printer settings; this fills it edge to edge.
+  var printHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+    '<style>' +
+    '@page { margin: 0; }' +
+    '* { box-sizing: border-box; margin: 0; padding: 0; }' +
+    'html { height: 100%; }' +
+    'body {' +
+    '  width: 100vw; height: 100vh;' +
+    '  display: flex; flex-direction: column;' +
+    '  align-items: center; justify-content: center;' +
+    '  padding: 4% 8% 7%;' +
+    '  font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;' +
+    '  overflow: hidden;' +
+    '}' +
+    '.logo { width: 42%; margin-bottom: 2%; display: block; }' +
+    '.b { fill: #2a1806; }' +
+    '.date { font-size: 1.6vw; letter-spacing: 0.22em; text-transform: uppercase;' +
+    '  color: #2a1806; opacity: 0.6; margin-bottom: 3%; text-align: center; }' +
+    '.rule { width: 18%; height: 1px; background: #2a1806; opacity: 0.25; margin-bottom: 4.5%; }' +
+    '.wine { font-size: 2.4vw; color: #221405; letter-spacing: 0.03em; line-height: 1.35;' +
+    '  margin-bottom: 2.8%; text-align: center; width: 100%; }' +
+    '.wine:last-child { margin-bottom: 0; }' +
+    '.wine em { font-style: italic; }' +
+    '</style></head><body>' +
+    '<svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150.63 106.98">' +
+    '<g><path class="b" d="M5.32,95.72c-1.02,0-1.9-.34-2.63-1.02-.73-.68-1.1-1.5-1.1-2.46,0-.91,.31-1.67,.95-2.26,.63-.59,1.91-1.16,3.84-1.7,1.21-.34,2.03-.62,2.45-.86v-.97c0-.95-.26-1.71-.79-2.3-.53-.58-1.24-.87-2.12-.87-.8,0-1.52,.25-2.14,.76s-1.06,1.19-1.31,2.05l-.67-.18c.26-1.21,.84-2.18,1.72-2.92,.88-.73,1.92-1.1,3.1-1.1,1.4,0,2.54,.42,3.41,1.27,.87,.85,1.31,2.02,1.31,3.52v5.6c0,.79,.05,1.33,.15,1.61,.1,.28,.3,.42,.59,.42,.19,0,.35-.08,.47-.24,.12-.16,.26-.5,.41-1.02h.63c-.06,.82-.32,1.46-.77,1.94-.45,.48-1.04,.72-1.77,.72-1.07,0-1.81-.62-2.21-1.85-.65,.71-1.22,1.19-1.73,1.46s-1.1,.4-1.78,.4Zm3.51-3.06v-4.43c-.37,.16-.91,.35-1.62,.59-1.31,.44-2.15,.88-2.51,1.32-.37,.44-.55,1.03-.55,1.77,0,.65,.2,1.21,.59,1.68,.39,.47,.85,.71,1.4,.71,.49,0,1.01-.16,1.55-.48s.92-.71,1.15-1.18Z"/><path class="b" d="M19.82,81.89v2.83c1.2-1.04,2.13-1.78,2.8-2.2s1.22-.63,1.67-.63c.83,0,1.63,.34,2.39,1.03l-.99,2.32c-1.39-.77-2.42-1.15-3.1-1.15-.74,0-1.67,.53-2.77,1.58v7.18c0,.72,.15,1.21,.45,1.46,.3,.25,.88,.38,1.73,.38v.61h-6.89v-.61c.91,0,1.51-.14,1.79-.43,.28-.29,.42-.98,.42-2.08v-7.13c0-.9-.15-1.49-.46-1.75-.31-.26-1.05-.4-2.24-.4v-.61l4.57-.4h.63Z"/><path class="b" d="M39.69,81.89v4.61h-.63c-.28-1.2-.8-2.15-1.58-2.84-.78-.7-1.71-1.04-2.79-1.04-1.3,0-2.35,.5-3.17,1.51-.82,1.01-1.22,2.32-1.22,3.92,0,1.78,.48,3.31,1.45,4.61,.97,1.3,2.12,1.94,3.45,1.94,.89,0,1.77-.24,2.64-.72,.87-.48,1.62-1.15,2.24-2v.95c-1.42,1.92-3.34,2.88-5.76,2.88-1.93,0-3.51-.61-4.73-1.84-1.22-1.22-1.83-2.81-1.83-4.77s.66-3.71,1.97-5.11c1.31-1.4,2.9-2.11,4.76-2.11,.83,0,1.75,.17,2.77,.5,.44,.14,.75,.22,.92,.22,.37,0,.67-.24,.88-.72h.63Z"/><path class="b" d="M52.15,92.58v-6.46c0-.87-.24-1.56-.72-2.07-.48-.52-1.12-.78-1.91-.78-.73,0-1.39,.19-1.97,.57s-1.19,1.02-1.83,1.92v7.16c0,.67,.16,1.14,.47,1.39,.31,.25,.88,.38,1.71,.38v.61h-7v-.61c1-.02,1.63-.19,1.91-.49,.28-.3,.41-.97,.41-2.02v-17.01c0-.79-.14-1.32-.42-1.58-.28-.26-.92-.39-1.9-.39v-.61l4.21-.45h.61v12.35c.84-.96,1.6-1.64,2.28-2.03s1.44-.58,2.3-.58c1.27,0,2.32,.41,3.13,1.23,.82,.82,1.22,1.92,1.22,3.3v5.77c0,1.02,.14,1.7,.41,2.02,.28,.33,.84,.49,1.69,.49v.61h-6.79v-.61c.89,0,1.47-.14,1.76-.41,.28-.28,.42-.84,.42-1.7Z"/><path class="b" d="M62.57,81.89h.63v11c0,.72,.16,1.2,.47,1.44,.31,.24,.88,.36,1.71,.36v.61h-7.15v-.61c1.04,0,1.72-.12,2.02-.35,.3-.23,.45-.72,.45-1.45v-8.04c0-.79-.14-1.32-.41-1.57-.28-.25-.96-.38-2.05-.38v-.61l4.34-.4Zm-.58-6.75c.44,0,.82,.15,1.12,.46,.31,.31,.46,.68,.46,1.12s-.16,.83-.47,1.14c-.31,.32-.68,.48-1.12,.48s-.83-.16-1.15-.48c-.32-.32-.49-.7-.49-1.14s.16-.82,.48-1.12c.32-.31,.7-.46,1.16-.46Z"/><path class="b" d="M70.69,81.89v2.2c.83-.8,1.58-1.37,2.26-1.7,.68-.33,1.44-.5,2.28-.5,1.69,0,3.1,.64,4.22,1.93,1.12,1.29,1.68,2.91,1.68,4.87s-.62,3.69-1.85,5.02-2.78,2-4.64,2c-1.29,0-2.6-.52-3.95-1.55v8.59c0,.89,.15,1.47,.46,1.75,.31,.28,.88,.42,1.72,.42v.61h-6.98v-.61c.9,0,1.51-.13,1.82-.38s.47-.73,.47-1.44v-18.18c0-.88-.13-1.44-.4-1.68-.26-.24-.89-.36-1.89-.36v-.61l4.18-.4h.63Zm0,3.17v8.17c1.02,1.08,2.23,1.62,3.61,1.62,1.17,0,2.14-.55,2.93-1.64,.79-1.09,1.18-2.45,1.18-4.07,0-1.75-.39-3.2-1.18-4.34-.79-1.14-1.79-1.71-3-1.71s-2.41,.65-3.54,1.96Z"/><path class="b" d="M96,91.95v.95c-.79,1.01-1.6,1.73-2.42,2.16-.82,.43-1.81,.65-2.96,.65-2.04,0-3.72-.64-5.05-1.92-1.33-1.28-1.99-2.9-1.99-4.87s.63-3.65,1.9-5c1.27-1.36,2.82-2.03,4.65-2.03,1.51,0,2.83,.51,3.96,1.53,1.13,1.02,1.69,2.24,1.69,3.65v.27h-9.6v.18c0,1.44,.22,2.69,.66,3.75,.44,1.06,1.08,1.89,1.92,2.49,.84,.6,1.72,.9,2.63,.9,.85,0,1.58-.18,2.19-.53,.61-.35,1.41-1.08,2.42-2.19Zm-9.81-5.24h7.11v-.25c0-1.16-.33-2.09-1-2.77-.67-.68-1.5-1.03-2.49-1.03-1.06,0-1.91,.36-2.55,1.08-.64,.72-1,1.71-1.07,2.97Z"/><path class="b" d="M104.47,94.69h.34v.61h-7.29v-.61h.67c.67,0,1.13-.17,1.37-.52,.24-.35,.36-1,.36-1.95v-17.22c0-.67-.13-1.14-.4-1.4-.26-.26-.72-.39-1.37-.39h-.85v-.61l4.5-.45h.61v20.7c0,.71,.14,1.19,.43,1.45,.29,.26,.83,.39,1.61,.39Z"/><path class="b" d="M110.18,95.72c-1.02,0-1.9-.34-2.63-1.02-.73-.68-1.1-1.5-1.1-2.46,0-.91,.32-1.67,.95-2.26,.63-.59,1.91-1.16,3.84-1.7,1.21-.34,2.03-.62,2.45-.86v-.97c0-.95-.26-1.71-.79-2.3s-1.24-.87-2.12-.87c-.8,0-1.52,.25-2.14,.76s-1.06,1.19-1.31,2.05l-.67-.18c.26-1.21,.84-2.18,1.72-2.92,.88-.73,1.92-1.1,3.11-1.1,1.4,0,2.54,.42,3.41,1.27,.87,.85,1.3,2.02,1.3,3.52v5.6c0,.79,.05,1.33,.15,1.61,.1,.28,.3,.42,.58,.42,.19,0,.35-.08,.47-.24,.12-.16,.26-.5,.41-1.02h.63c-.06,.82-.32,1.46-.77,1.94-.45,.48-1.04,.72-1.77,.72-1.07,0-1.81-.62-2.21-1.85-.65,.71-1.22,1.19-1.73,1.46-.5,.26-1.1,.4-1.78,.4Zm3.51-3.06v-4.43c-.37,.16-.91,.35-1.62,.59-1.31,.44-2.15,.88-2.51,1.32s-.55,1.03-.55,1.77c0,.65,.2,1.21,.58,1.68,.39,.47,.86,.71,1.4,.71,.49,0,1.01-.16,1.55-.48s.92-.71,1.15-1.18Z"/><path class="b" d="M129.27,82.03h4.19v1.48h-3.46c.98,1.19,1.48,2.45,1.48,3.8s-.48,2.49-1.43,3.51c-.95,1.02-2.1,1.57-3.43,1.64-.95,.05-1.89,.35-2.83,.92-.94,.56-1.41,1.07-1.41,1.51,0,.48,.25,.84,.75,1.08,.5,.24,1.67,.52,3.5,.84,2.04,.37,3.46,.71,4.26,1,.8,.3,1.42,.73,1.87,1.29,.45,.56,.67,1.19,.67,1.9,0,1.54-.78,2.84-2.33,3.89-1.55,1.06-3.45,1.59-5.7,1.59-1.91,0-3.45-.37-4.63-1.11-1.18-.74-1.77-1.7-1.77-2.89,0-.83,.34-1.56,1.02-2.21,.68-.64,1.75-1.27,3.21-1.88v-.07c-.89-.2-1.58-.52-2.09-.95-.5-.43-.76-.91-.76-1.45,0-1.44,1.34-2.63,4.03-3.58v-.07c-1.31-.35-2.32-.95-3.03-1.81-.71-.86-1.07-1.9-1.07-3.12,0-1.57,.52-2.87,1.58-3.91,1.05-1.03,2.37-1.55,3.97-1.55,.31,0,.89,.02,1.73,.07,.84,.05,1.4,.07,1.69,.07Zm2.81,20.13c0-.85-.53-1.52-1.6-1.99-1.07-.47-3.09-.97-6.07-1.49-2.53,.68-3.8,1.72-3.8,3.1,0,.94,.62,1.72,1.87,2.35,1.25,.63,2.81,.95,4.68,.95,1.45,0,2.63-.27,3.55-.81,.91-.54,1.37-1.24,1.37-2.11Zm-9.42-15.09c0,1.42,.29,2.56,.88,3.42,.59,.86,1.37,1.3,2.34,1.3s1.79-.42,2.37-1.27,.87-2,.87-3.45c0-1.32-.3-2.39-.89-3.22s-1.37-1.24-2.31-1.24-1.76,.41-2.36,1.23c-.6,.82-.9,1.9-.9,3.23Z"/><path class="b" d="M148.83,88.82c0,1.97-.68,3.61-2.04,4.92-1.36,1.31-3.06,1.97-5.1,1.97s-3.74-.66-5.1-1.97c-1.36-1.31-2.04-2.96-2.04-4.92s.68-3.65,2.03-4.96,3.06-1.97,5.11-1.97,3.76,.66,5.11,1.97,2.03,2.97,2.03,4.96Zm-2.72,0c0-1.86-.4-3.37-1.19-4.51s-1.87-1.71-3.24-1.71-2.45,.56-3.24,1.68c-.79,1.12-1.19,2.63-1.19,4.54s.39,3.37,1.18,4.49c.79,1.12,1.87,1.68,3.25,1.68s2.46-.57,3.25-1.7c.79-1.13,1.18-2.62,1.18-4.47Z"/></g><g><circle class="b" cx="65.93" cy="11.16" r="11.16"/><circle class="b" cx="66.49" cy="28.28" r="3.24"/><circle class="b" cx="87.23" cy="55.55" r="7.32"/><circle class="b" cx="78.32" cy="42.03" r="5.23"/><circle class="b" cx="58.66" cy="38.65" r="2.93"/><circle class="b" cx="76.5" cy="61.95" r="2.24"/><circle class="b" cx="85.94" cy="31.77" r="3.69"/><circle class="b" cx="73.42" cy="33.2" r="3.69"/><circle class="b" cx="53.21" cy="43.82" r="1.24"/></g>' +
+    '</svg>' +
+    '<div class="date">' + dateStr + '</div>' +
+    '<div class="rule"></div>' +
+    winesHtml +
+    '</body></html>';
+
+  var printWin = window.open('', '_blank');
+  printWin.document.open();
+  printWin.document.write(printHtml);
+  printWin.document.close();
+  printWin.onload = function() {
+    printWin.focus();
+    printWin.print();
+  };
+}
+
+renderSeasons();
+show('home');
+</script>
+
+</body></html>
