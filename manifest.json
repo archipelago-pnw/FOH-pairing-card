@@ -1,0 +1,25 @@
+{
+  "name": "Archipelago Wine Pairing",
+  "short_name": "Wine Pairing",
+  "description": "Front of house wine pairing card generator",
+  "start_url": "/FOH-pairing-card/index.html",
+  "scope": "/FOH-pairing-card/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1008",
+  "theme_color": "#1a1008",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
